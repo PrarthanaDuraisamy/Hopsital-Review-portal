@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Review Site
+	</title>
+	<script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style type="text/css">
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+ td, th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-family: cursive;
+  font-size: 20px;
+}
+
+ tr:nth-child(even){background-color: #f2f2f2;}
+
+ tr:hover {background-color: #ddd;}
+
+ th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+body{
+	font-family: cursive;
+}
+</style>
+<body>
+
+	<h1 style="text-align: center;">Hospital Reviews Web Application</h1><br><br><br>
+	{% if flag is True %}
+		<div id="container" style="max-width: 500px; height: 500px;font-size: 20px;margin:auto">
+			<h2 style="text-align: center;">Hospital: {{c.hosp}}</h2>
+		</div>
+		<script type="text/javascript">
+			console.log({{c.practo}});
+			console.log('Hello');
+			var data = {
+            header: ["Name", "Rating"],
+            rows: [
+              ["Practo",parseInt("{{c.practo}}")],
+              ["MouthShut", parseInt("{{c.mouthshut}}")],
+              ["JustDial", parseInt("{{c.justdial}}")],
+             
+              
+        ]};
+         var chart = anychart.column();
+         chart.width = "550px";
+         chart.height = "400px";
+
+		  // add data
+		  chart.data(data);
+		  chart.title("Different Reviews of the hospital: {{c.hosp}}");
+		  chart.container("container");
+		  chart.draw();
+		</script>
+		<div style="margin:auto;">
+			<br><br><br><br><br>
+			<h2 style="text-align: center;">Speciality: {{c.spec}}</h2>
+		</div>
+	{% endif %}
+	<form method="post">
+		{% csrf_token %}
+		<input type="text" name="hospital" id="hospital" hidden="">
+		<input type="submit" name="" id="sub" hidden>
+	</form>
+	<h3 style="text-align: center;">List of Hospitals</h3>
+	<table>
+		{% for i in d %}
+			<tr id = "{{i}}" onclick="myfunction(this.id)">
+				<td>
+					<label name="{{i}}">
+						{{i}}
+					</label>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+</body>
+</html>
+<script type="text/javascript">
+	function myfunction(iD){
+		console.log(iD);
+		document.getElementById("hospital").value = iD;
+		document.getElementById("sub").click();
+	}
+</script>
